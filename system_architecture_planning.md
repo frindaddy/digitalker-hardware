@@ -65,4 +65,8 @@ Combining all these interfaces, the minimum number of required I/O pins is **42*
 
 ### Timing Requirements
 
-Timing requirements are an important consideration for this design, and are a deciding factor between a microcontroller and an FPGA. While FPGAs are significantly faster and allow strict timing constraints, modern microcontrollers are cheap and fast enough to get the job done in many cases. For this design, the fastest timing constraint comes from the ROM emulation. According to the MM4104 datasheet, the maximum allowable time between a receiving a request for data at a given address and presenting that data is 2us.
+Timing requirements are an important consideration for this design, and are a deciding factor between a microcontroller and an FPGA. While FPGAs are significantly faster and allow strict timing constraints, modern microcontrollers are cheap and fast enough to get the job done in many cases. For this design, the fastest timing constraint comes from the ROM emulation. According to the MM4104 datasheet, the maximum allowable time between a receiving a request for data at a given address and presenting that data to the MM4104 is 2us. This is an *eternity* in the modern timing regime, so no special hardware is required (although care should still be taken to minimize instruction time in the software).
+
+### Final Selection
+
+With these considerations in mind, the ideal choice for the MCU is the RP2350B. With its dual 150MHz ARM (or RISC-V) cores, 3 150MHz PIO state machines, QSPI FLASH interface, and 48 I/O pins, the RP2350B meets all the requirements with pins to spare. It is a widely-used microcontroller with pre-existing libraries for I2S and SPI interfaces. Finally, the RP2350B is *cheap*. At just $1 at the time of writing, its flexibility compared to its cost blows modern CPLDs and FPGAs out of the water.
