@@ -4,9 +4,9 @@ This doc hold notes about the system architecture plan.
 
 ## General Architecture
 
-For flexibility, the ideal architecture should emulate the speech ROMs rather than using actual parallel bus memory ICs. The final system will require an external control chip for recording/storing audio and controlling the MM4104, so it simplifies the hardware design to include ROM emulation as a part of the control chip's duties.
+For flexibility, the ideal architecture should emulate the speech ROMs rather than using actual parallel bus memory ICs. The final system will require an external control chip for recording/storing audio and controlling the MM54104, so it simplifies the hardware design to include ROM emulation as a part of the control chip's duties.
 
-The industry standard method of moving audio signals around a PCB is to use the I2S (Inter-IC Sound) protocol. This is a widely-used serial communication protocol for transmitting digitial audio data between sound-processing devices. Because of the high adpotion of this standard, many turn-key I2S ICs and SoMs are cheaply availible. Additionally, analog to digital audio processing and recording is computationally expensive for microcontrollers and FPGAs that lack dedicated audio processing silicon. As such, the MM4104 audio output will be converted to a digital I2S stream with discrete components and supplied to the MCU for SD card storage.
+The industry standard method of moving audio signals around a PCB is to use the I2S (Inter-IC Sound) protocol. This is a widely-used serial communication protocol for transmitting digitial audio data between sound-processing devices. Because of the high adpotion of this standard, many turn-key I2S ICs and SoMs are cheaply availible. Additionally, analog to digital audio processing and recording is computationally expensive for microcontrollers and FPGAs that lack dedicated audio processing silicon. As such, the MM54104 audio output will be converted to a digital I2S stream with discrete components and supplied to the MCU for SD card storage.
 
 ## MCU Selection
 
@@ -16,9 +16,9 @@ With these requirements, the obvious question is whether to pick a microcontroll
 
 For clarity, we'll count out the I/O required for each interface. The I or O designation is with respect to the MCU.
 
-#### MM4104 Control Signals
+#### MM54104 Control Signals
 
-These are the I/O lines required to control the MM4104.
+These are the I/O lines required to control the MM54104.
 
 | Signal | I/O | Pin Count |
 | ------ | --- | --------- |
@@ -30,7 +30,7 @@ These are the I/O lines required to control the MM4104.
 
 #### ROM Emulation Signals
 
-These are the I/O lines required to emulate the parallel bus ROM chips the MM4104 typically interfaces with. These have additional timing requirements, which are discussed in a later section.
+These are the I/O lines required to emulate the parallel bus ROM chips the MM54104 typically interfaces with. These have additional timing requirements, which are discussed in a later section.
 
 | Signal | I/O | Pin Count |
 | ------ | --- | --------- |
@@ -40,7 +40,7 @@ These are the I/O lines required to emulate the parallel bus ROM chips the MM410
 
 #### I2S Bus
 
-As discussed earlier, the MCU will recieve the MM4104 audio stream over I2S. An I2S interface consists of 3 data lines, although often requires a fourth clock line separate from the protocol to run the sampling logic in the ADC. Modern I2S ICs (like the PCM1809) come equipped with internal PLLs that can generate this clock from the interface itself. A modern I2S ADC will be used to reduce the complexity of the hardware and reduce the required MCU I/O pins.
+As discussed earlier, the MCU will recieve the MM54104 audio stream over I2S. An I2S interface consists of 3 data lines, although often requires a fourth clock line separate from the protocol to run the sampling logic in the ADC. Modern I2S ICs (like the PCM1809) come equipped with internal PLLs that can generate this clock from the interface itself. A modern I2S ADC will be used to reduce the complexity of the hardware and reduce the required MCU I/O pins.
 
 | Signal | I/O | Pin Count |
 | ------ | --- | --------- |
@@ -65,7 +65,7 @@ Combining all these interfaces, the minimum number of required I/O pins is **42*
 
 ### Timing Requirements
 
-Timing requirements are an important consideration for this design, and are a deciding factor between a microcontroller and an FPGA. While FPGAs are significantly faster and allow strict timing constraints, modern microcontrollers are cheap and fast enough to get the job done in many cases. For this design, the fastest timing constraint comes from the ROM emulation. According to the MM4104 datasheet, the maximum allowable time between a receiving a request for data at a given address and presenting that data to the MM4104 is 2us. This is an *eternity* in the modern timing regime, so no special hardware is required (although care should still be taken to minimize instruction time in the software).
+Timing requirements are an important consideration for this design, and are a deciding factor between a microcontroller and an FPGA. While FPGAs are significantly faster and allow strict timing constraints, modern microcontrollers are cheap and fast enough to get the job done in many cases. For this design, the fastest timing constraint comes from the ROM emulation. According to the MM54104 datasheet, the maximum allowable time between a receiving a request for data at a given address and presenting that data to the MM54104 is 2us. This is an *eternity* in the modern timing regime, so no special hardware is required (although care should still be taken to minimize instruction time in the software).
 
 ### Final Selection
 
