@@ -69,4 +69,8 @@ Timing requirements are an important consideration for this design, and are a de
 
 ### Final Selection
 
-With these considerations in mind, the ideal choice for the MCU is the RP2350B. With its dual 150MHz ARM (or RISC-V) cores, 3 150MHz PIO state machines, QSPI FLASH interface, and 48 I/O pins, the RP2350B meets all the requirements with pins to spare. It is a widely-used microcontroller with pre-existing libraries for I2S and SPI interfaces. Finally, the RP2350B is *cheap*. At just $1 at the time of writing, its flexibility compared to its cost blows modern CPLDs and FPGAs out of the water.
+With these considerations in mind, the ideal choice for the MCU is the **RP2350B**. With its dual 150MHz ARM (or RISC-V) cores, 3 150MHz PIO state machines, QSPI FLASH interface, and 48 I/O pins, the RP2350B meets all the requirements with pins to spare. It is a widely-used microcontroller with pre-existing libraries for I2S and SPI interfaces. Finally, the RP2350B is *cheap*. At just $1 at the time of writing, its flexibility compared to its cost blows modern CPLDs and FPGAs out of the water.
+
+## I2S Conversion
+
+For audio recording, the PCM1809 will be used. The up to 192kHz sampling rate and 32-bit channel depth meet the audio recording requirements, and the internal PLLs simplify the RP2350B connections to just 3 pins.
